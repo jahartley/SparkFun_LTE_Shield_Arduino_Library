@@ -58,8 +58,8 @@
 
 #include <IPAddress.h>
 
-//#define LTE_SHIELD_POWER_PIN 5
-//#define LTE_SHIELD_RESET_PIN 6
+#define LTE_SHIELD_POWER_PIN 5
+#define LTE_SHIELD_RESET_PIN 6
 
 typedef enum
 {
