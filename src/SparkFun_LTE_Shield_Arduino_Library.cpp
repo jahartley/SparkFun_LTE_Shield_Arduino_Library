@@ -98,7 +98,7 @@ const unsigned long LTE_SHIELD_SUPPORTED_BAUD[NUM_SUPPORTED_BAUD] =
 
 char lteShieldRXBuffer[128];
 
-static boolean parseGPRMCString(char *rmcString, PositionData *pos, ClockData *clk, SpeedData *spd);
+static bool parseGPRMCString(char *rmcString, PositionData *pos, ClockData *clk, SpeedData *spd);
 
 LTE_Shield::LTE_Shield(uint8_t powerPin, uint8_t resetPin)
 {
@@ -118,7 +118,7 @@ LTE_Shield::LTE_Shield(uint8_t powerPin, uint8_t resetPin)
 }
 
 #ifdef LTE_SHIELD_SOFTWARE_SERIAL_ENABLED
-boolean LTE_Shield::begin(SoftwareSerial &softSerial, unsigned long baud)
+bool LTE_Shield::begin(SoftwareSerial &softSerial, unsigned long baud)
 {
     LTE_Shield_error_t err;
 
@@ -133,7 +133,7 @@ boolean LTE_Shield::begin(SoftwareSerial &softSerial, unsigned long baud)
 }
 #endif
 
-boolean LTE_Shield::begin(HardwareSerial &hardSerial, unsigned long baud)
+bool LTE_Shield::begin(HardwareSerial &hardSerial, unsigned long baud)
 {
     LTE_Shield_error_t err;
 
@@ -147,7 +147,7 @@ boolean LTE_Shield::begin(HardwareSerial &hardSerial, unsigned long baud)
     return false;
 }
 
-boolean LTE_Shield::poll(void)
+bool LTE_Shield::poll(void)
 {
     int avail = 0;
     char c = 0;
@@ -326,7 +326,7 @@ LTE_Shield_error_t LTE_Shield::at(void)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::enableEcho(boolean enable)
+LTE_Shield_error_t LTE_Shield::enableEcho(bool enable)
 {
     LTE_Shield_error_t err;
     char *command;
@@ -538,7 +538,7 @@ LTE_Shield_error_t LTE_Shield::clock(uint8_t *y, uint8_t *mo, uint8_t *d,
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::autoTimeZone(boolean enable)
+LTE_Shield_error_t LTE_Shield::autoTimeZone(bool enable)
 {
     LTE_Shield_error_t err;
     char *command;
@@ -629,7 +629,7 @@ LTE_Shield_registration_status_t LTE_Shield::registration(void)
     return (LTE_Shield_registration_status_t)status;
 }
 
-boolean LTE_Shield::setNetwork(mobile_network_operator_t mno)
+bool LTE_Shield::setNetwork(mobile_network_operator_t mno)
 {
     mobile_network_operator_t currentMno;
 
@@ -1342,12 +1342,12 @@ IPAddress LTE_Shield::lastRemoteIP(void)
     return _lastRemoteIP;
 }
 
-boolean LTE_Shield::gpsOn(void)
+bool LTE_Shield::gpsOn(void)
 {
     LTE_Shield_error_t err;
     char *command;
     char *response;
-    boolean on = false;
+    bool on = false;
 
     command = lte_calloc_char(strlen(LTE_SHIELD_GPS_POWER) + 2);
     if (command == NULL)
@@ -1378,11 +1378,11 @@ boolean LTE_Shield::gpsOn(void)
     return on;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsPower(boolean enable, gnss_system_t gnss_sys)
+LTE_Shield_error_t LTE_Shield::gpsPower(bool enable, gnss_system_t gnss_sys)
 {
     LTE_Shield_error_t err;
     char *command;
-    boolean gpsState;
+    bool gpsState;
 
     // Don't turn GPS on/off if it's already on/off
     gpsState = gpsOn();
@@ -1409,7 +1409,7 @@ LTE_Shield_error_t LTE_Shield::gpsPower(boolean enable, gnss_system_t gnss_sys)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnableClock(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnableClock(bool enable)
 {
     // AT+UGZDA=<0,1>
     LTE_Shield_error_t err = LTE_SHIELD_ERROR_SUCCESS;
@@ -1423,7 +1423,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetClock(struct ClockData *clock)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnableFix(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnableFix(bool enable)
 {
     // AT+UGGGA=<0,1>
     LTE_Shield_error_t err = LTE_SHIELD_ERROR_SUCCESS;
@@ -1437,7 +1437,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetFix(struct PositionData *pos)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnablePos(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnablePos(bool enable)
 {
     // AT+UGGLL=<0,1>
     LTE_Shield_error_t err = LTE_SHIELD_ERROR_SUCCESS;
@@ -1451,7 +1451,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetPos(struct PositionData *pos)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnableSat(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnableSat(bool enable)
 {
     // AT+UGGSV=<0,1>
     LTE_Shield_error_t err = LTE_SHIELD_ERROR_SUCCESS;
@@ -1465,7 +1465,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetSat(uint8_t *sats)
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnableRmc(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnableRmc(bool enable)
 {
     // AT+UGRMC=<0,1>
     LTE_Shield_error_t err;
@@ -1492,7 +1492,7 @@ LTE_Shield_error_t LTE_Shield::gpsEnableRmc(boolean enable)
 }
 
 LTE_Shield_error_t LTE_Shield::gpsGetRmc(struct PositionData *pos, struct SpeedData *spd,
-                                         struct ClockData *clk, boolean *valid)
+                                         struct ClockData *clk, bool *valid)
 {
     LTE_Shield_error_t err;
     char *command;
@@ -1531,7 +1531,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetRmc(struct PositionData *pos, struct SpeedD
     return err;
 }
 
-LTE_Shield_error_t LTE_Shield::gpsEnableSpeed(boolean enable)
+LTE_Shield_error_t LTE_Shield::gpsEnableSpeed(bool enable)
 {
     // AT+UGVTG=<0,1>
     LTE_Shield_error_t err = LTE_SHIELD_ERROR_SUCCESS;
@@ -1546,7 +1546,7 @@ LTE_Shield_error_t LTE_Shield::gpsGetSpeed(struct SpeedData *speed)
 }
 
 LTE_Shield_error_t LTE_Shield::gpsRequest(unsigned int timeout, uint32_t accuracy,
-                                          boolean detailed)
+                                          bool detailed)
 {
     // AT+ULOC=2,<useCellLocate>,<detailed>,<timeout>,<accuracy>
     LTE_Shield_error_t err;
@@ -1719,7 +1719,7 @@ LTE_Shield_error_t LTE_Shield::getMno(mobile_network_operator_t *mno)
 }
 
 /*LTE_Shield_error_t LTE_Shield::sendCommandWithResponseAndTimeout(const char * command,
-    char * expectedResponse, uint16_t commandTimeout, boolean at)
+    char * expectedResponse, uint16_t commandTimeout, bool at)
 {
     unsigned long timeIn = millis();
     char * response;
@@ -1752,7 +1752,7 @@ LTE_Shield_error_t LTE_Shield::getMno(mobile_network_operator_t *mno)
 LTE_Shield_error_t LTE_Shield::waitForResponse(const char *expectedResponse, uint16_t timeout)
 {
     unsigned long timeIn;
-    boolean found = false;
+    bool found = false;
     int index = 0;
 
     timeIn = millis();
@@ -1780,10 +1780,10 @@ LTE_Shield_error_t LTE_Shield::waitForResponse(const char *expectedResponse, uin
 
 LTE_Shield_error_t LTE_Shield::sendCommandWithResponse(
     const char *command, const char *expectedResponse, char *responseDest,
-    unsigned long commandTimeout, boolean at)
+    unsigned long commandTimeout, bool at)
 {
     unsigned long timeIn;
-    boolean found = false;
+    bool found = false;
     int index = 0;
     int destIndex = 0;
     unsigned int charsRead = 0;
@@ -1833,7 +1833,7 @@ LTE_Shield_error_t LTE_Shield::sendCommandWithResponse(
     }
 }
 
-boolean LTE_Shield::sendCommand(const char *command, boolean at)
+bool LTE_Shield::sendCommand(const char *command, bool at)
 {
     readAvailable(NULL); // Clear out receive buffer before sending a new command
 
@@ -2107,7 +2107,7 @@ static char *readDataUntil(char *destination, unsigned int destSize,
 
 #define TEMP_NMEA_DATA_SIZE 16
 
-static boolean parseGPRMCString(char *rmcString, PositionData *pos,
+static bool parseGPRMCString(char *rmcString, PositionData *pos,
                                 ClockData *clk, SpeedData *spd)
 {
     char *ptr, *search;
