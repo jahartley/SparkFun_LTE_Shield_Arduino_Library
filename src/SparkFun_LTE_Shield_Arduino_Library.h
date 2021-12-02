@@ -49,7 +49,7 @@
 #endif
 
 #ifdef ARDUINO_ARCH_STM32                  // STM32 based boards (Disco, Nucleo, etc)
-#define LTE_SHIELD_SOFTWARE_SERIAL_ENABLED // Enable software serial
+//#define LTE_SHIELD_SOFTWARE_SERIAL_ENABLED // Enable software serial removed when not using software serial
 #endif
 
 #ifdef LTE_SHIELD_SOFTWARE_SERIAL_ENABLED
@@ -58,8 +58,8 @@
 
 #include <IPAddress.h>
 
-#define LTE_SHIELD_POWER_PIN 5
-#define LTE_SHIELD_RESET_PIN 6
+//#define LTE_SHIELD_POWER_PIN 5
+//#define LTE_SHIELD_RESET_PIN 6
 
 typedef enum
 {
@@ -173,12 +173,12 @@ public:
 
     // Begin -- initialize BT module and ensure it's connected
 #ifdef LTE_SHIELD_SOFTWARE_SERIAL_ENABLED
-    boolean begin(SoftwareSerial &softSerial, unsigned long baud = 9600);
+    bool begin(SoftwareSerial &softSerial, unsigned long baud = 9600);
 #endif
-    boolean begin(HardwareSerial &hardSerial, unsigned long baud = 9600);
+    bool begin(HardwareSerial &hardSerial, unsigned long baud = 9600);
 
     // Loop polling and polling setup
-    boolean poll(void);
+    bool poll(void);
     void setSocketReadCallback(void (*socketReadCallback)(int, String));
     void setSocketCloseCallback(void (*socketCloseCallback)(int));
     void setGpsReadCallback(void (*gpsRequestCallback)(ClockData time,
@@ -191,7 +191,7 @@ public:
 
     // General AT Commands
     LTE_Shield_error_t at(void);
-    LTE_Shield_error_t enableEcho(boolean enable = true);
+    LTE_Shield_error_t enableEcho(bool enable = true);
     String imei(void);
     String imsi(void);
     String ccid(void);
@@ -202,12 +202,12 @@ public:
     // TODO: Return a clock struct
     LTE_Shield_error_t clock(uint8_t *y, uint8_t *mo, uint8_t *d,
                              uint8_t *h, uint8_t *min, uint8_t *s, uint8_t *tz);
-    LTE_Shield_error_t autoTimeZone(boolean enable);
+    LTE_Shield_error_t autoTimeZone(bool enable);
 
     // Network service AT commands
     int8_t rssi(void);
     LTE_Shield_registration_status_t registration(void);
-    boolean setNetwork(mobile_network_operator_t mno);
+    bool setNetwork(mobile_network_operator_t mno);
     mobile_network_operator_t getNetwork(void);
     typedef enum
     {
@@ -302,26 +302,26 @@ public:
         GNSS_SYSTEM_QZSS = 32,
         GNSS_SYSTEM_GLONASS = 64
     } gnss_system_t;
-    boolean gpsOn(void);
-    LTE_Shield_error_t gpsPower(boolean enable = true,
+    bool gpsOn(void);
+    LTE_Shield_error_t gpsPower(bool enable = true,
                                 gnss_system_t gnss_sys = GNSS_SYSTEM_GPS);
-    LTE_Shield_error_t gpsEnableClock(boolean enable = true);
+    LTE_Shield_error_t gpsEnableClock(bool enable = true);
     LTE_Shield_error_t gpsGetClock(struct ClockData *clock);
-    LTE_Shield_error_t gpsEnableFix(boolean enable = true);
+    LTE_Shield_error_t gpsEnableFix(bool enable = true);
     LTE_Shield_error_t gpsGetFix(float *lat, float *lon,
                                  unsigned int *alt, uint8_t *quality, uint8_t *sat);
     LTE_Shield_error_t gpsGetFix(struct PositionData *pos);
-    LTE_Shield_error_t gpsEnablePos(boolean enable = true);
+    LTE_Shield_error_t gpsEnablePos(bool enable = true);
     LTE_Shield_error_t gpsGetPos(struct PositionData *pos);
-    LTE_Shield_error_t gpsEnableSat(boolean enable = true);
+    LTE_Shield_error_t gpsEnableSat(bool enable = true);
     LTE_Shield_error_t gpsGetSat(uint8_t *sats);
-    LTE_Shield_error_t gpsEnableRmc(boolean enable = true);
+    LTE_Shield_error_t gpsEnableRmc(bool enable = true);
     LTE_Shield_error_t gpsGetRmc(struct PositionData *pos, struct SpeedData *speed,
-                                 struct ClockData *clk, boolean *valid);
-    LTE_Shield_error_t gpsEnableSpeed(boolean enable = true);
+                                 struct ClockData *clk, bool *valid);
+    LTE_Shield_error_t gpsEnableSpeed(bool enable = true);
     LTE_Shield_error_t gpsGetSpeed(struct SpeedData *speed);
 
-    LTE_Shield_error_t gpsRequest(unsigned int timeout, uint32_t accuracy, boolean detailed = true);
+    LTE_Shield_error_t gpsRequest(unsigned int timeout, uint32_t accuracy, bool detailed = true);
 
 private:
     HardwareSerial *_hardSerial;
@@ -370,10 +370,10 @@ private:
 
     // Send command with an expected (potentially partial) response, store entire response
     LTE_Shield_error_t sendCommandWithResponse(const char *command, const char *expectedResponse,
-                                               char *responseDest, unsigned long commandTimeout, boolean at = true);
+                                               char *responseDest, unsigned long commandTimeout, bool at = true);
 
     // Send a command -- prepend AT if at is true
-    boolean sendCommand(const char *command, boolean at);
+    bool sendCommand(const char *command, bool at);
 
     LTE_Shield_error_t parseSocketReadIndication(int socket, int length);
     LTE_Shield_error_t parseSocketListenIndication(IPAddress localIP, IPAddress remoteIP);
